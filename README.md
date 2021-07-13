@@ -16,7 +16,7 @@ El archivo tilin.txt son los datos procesados por el archivo get_abstract.py
 
 ### Ejecutar el proyecto
 
-Para ejecutar el proyecto solo es necesario descargar el archivo tili.txt
+Para ejecutar el proyecto solo es necesario descargar el archivo tilin.txt
 y ponerlo en la misma ruta que el archivo SuffixTree.cpp. Se compila y se ejecuta.
 Luego se tendra la opcion de realizar busquedas donde le pedira un patron a buscar
 en los datos indexados.

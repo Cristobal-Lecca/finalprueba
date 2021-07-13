@@ -38,7 +38,6 @@ void suffixTree::insert(string s, int documentId) {
         suffixNode* a = new suffixNode(s);
         nodoActual->aristas.push_back(a);
         nodoActual->aristas[nodoActual->aristas.size()-1]->documentos.push_back(make_pair(documentId, 1));
-        //cout << "return 1 " << endl;
         return;
     }
     int indiceS=0;
@@ -58,10 +57,8 @@ void suffixTree::insert(string s, int documentId) {
             suffixNode* a = new suffixNode(temp);
             nodoActual->aristas.push_back(a);
             nodoActual->aristas[nodoActual->aristas.size() - 1]->documentos.push_back(make_pair(documentId, 1));
-            //cout << "return 2 " << endl;
             return;
         }
-        //estoy en el nodo con la primera letra igual
 
         //si ya estaba indexada la palabra y encuentra el nodo hoja, busca el documento
         //si ya estaba en el vector documentos, si no esta crea uno para el id que se
@@ -71,12 +68,10 @@ void suffixTree::insert(string s, int documentId) {
                 for (int k = 0; k < nodoActual->documentos.size(); k++) {
                     if (nodoActual->documentos[k].first == documentId) {
                         nodoActual->documentos[k].second++;
-                        //cout << "return 3 " << endl;
                         return;
                     }
                 }
                 nodoActual->documentos.push_back(make_pair(documentId, 1));
-                //cout << "return 4 " << endl;
                 return;
             }
             indiceS += nodoActual->s.size();
@@ -90,7 +85,6 @@ void suffixTree::insert(string s, int documentId) {
         }
 
         suffixNode* aux = new suffixNode(nodoActual->s.substr(indiceAux));
-        //cout << "s.substr  " << nodoActual->s.substr(indiceAux) << endl;
         aux->aristas = nodoActual->aristas;
         aux->documentos = nodoActual->documentos;
         nodoActual->aristas.clear();
@@ -99,7 +93,6 @@ void suffixTree::insert(string s, int documentId) {
         suffixNode* aux2 = new suffixNode(s.substr(j));
         nodoActual->aristas.push_back(aux2);
         nodoActual->s.erase(indiceAux, nodoActual->s.size() - indiceAux);
-        //cout << "return 5 " << endl;
         return;
 
     }
@@ -119,8 +112,6 @@ void suffixTree::printSuffixes(string s, suffixNode* r) {
         return;
     }
     for (int i = 0; i < r->aristas.size(); i++) {
-        //cout << s + r->s << endl;
-        //cout << "enviando i: " << i << endl;
         printSuffixes(s+r->s, r->aristas[i]);
     }
 }
@@ -135,43 +126,30 @@ void suffixTree::query(string s) {
     }
     int indiceS = 0;
     while (true) {
-       // cout << "iteracion " << endl;
         bool br = false;
         int i;//indice para el vector
         for (i = 0; i < nodoActual->aristas.size(); i++) {
-           // cout << "s[indiceS]: " << s[indiceS] << "  nodoactual->aristas[i]->s[0] " << nodoActual->aristas[i]->s[0] << endl;
             if (nodoActual->aristas[i]->s[0] == s[indiceS]) {
                 nodoActual = nodoActual->aristas[i];
                 br = true;
-               // cout << "break indice: " << i  << "indiceS " << indiceS << endl;
                 break;
             }
         }
-        //cout << "indiceS " << indiceS << endl;
         if (i == nodoActual->aristas.size() && nodoActual->s[nodoActual->s.size() - 1] != '$' && !br) {
-           // cout << "string s actual " << nodoActual->s << endl;
             cout << "No se encontro ocurrencias " << endl;
             return;
         }
         
         if (s.substr(indiceS, nodoActual->s.size()) == nodoActual->s) {
-            //cout << "nodo actual " << nodoActual->s << endl;
-            //cout << "substr " << s.substr(indiceS, nodoActual->s.size()) << endl;
-            //cout << nodoActual->s[s.size() - 1] << " caracter" << endl;
             if (nodoActual->s[nodoActual->s.size() - 1] == '$') {
-                //encontro la palabra
-                //aqui imprimir contenidos //////////////////////////////////////////
-                //out << "cantidad de documentos en los que aparece : " << nodoActual->documentos.size() << endl;
                 for (int cont = 0; cont < nodoActual->documentos.size(); cont++) {
                     cout << "document id: " << nodoActual->documentos[cont].first << endl
                      << " puntuacion: " << nodoActual->documentos[cont].second * log(nDocs / nodoActual->documentos.size()) << endl;
                 }
-                //cout << "return 3 " << endl;
                 return;
             }
             //sigue avanzando, es igual la cadena pero todavia no termina el suffijo
             indiceS += nodoActual->s.size();
-            //cout << "CONTINUE " <<  "   indiceS: " << indiceS << endl;
             continue;
         }
         else {
@@ -199,7 +177,6 @@ void suffixTree::buildSuffixTree() {
         for (int i = str.size() - 1; i >= 0; i--) {
             insert(str.substr(i), docId);
         }
-        //insert(str, docId);
     }
 }
 
@@ -209,8 +186,6 @@ int main()
     suffixTree t(5);
     t.buildSuffixTree();
     cout << "suffix tree built " << "\n\n";
-    //t.print();
-    //t.query("meeting");
     string query;
     while (true) {
 
